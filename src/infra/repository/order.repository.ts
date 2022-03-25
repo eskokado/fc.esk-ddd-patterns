@@ -71,7 +71,8 @@ export default class OrderRepository implements OrderRepositoryInterface {
         where: {
           id,
         },
-        include: [{ model: OrderItemModel, as: 'items' }, { model: ProductModel, as: 'product'}],
+        include: [{ model: OrderItemModel, as: 'items', include: [{ model: ProductModel, as: 'product'}] }],
+        // include: [{ model: OrderItemModel, as: 'items' }, { model: ProductModel, as: 'product'}],
         rejectOnEmpty: true,
       });
     } catch (error) {
