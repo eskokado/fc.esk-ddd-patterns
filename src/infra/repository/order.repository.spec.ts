@@ -60,26 +60,17 @@ describe("Order repository test", () => {
     const orderRepository = new OrderRepository();
     await orderRepository.create(order);
 
-    const orderModel = await OrderModel.findOne({
-      where: { id: order.id },
-      include: [ "items" ],
-    });
+    const orderResult = await orderRepository.find(order.id);
 
-    expect(orderModel.toJSON()).toStrictEqual({
-      id: order.id,
-      customer_id: order.customerId,
-      total: order.total(),
-      items: [
-        {
-          id: orderItem.id,
-          name: orderItem.name,
-          price: orderItem.price,
-          quantity: orderItem.quantity,
-          order_id: order.id,
-          product_id: orderItem.productId,
-        },
-      ],
-    });
+    expect(orderResult.id).toBe(order.id);
+    expect(orderResult.customerId).toBe(order.customerId);
+    expect(orderResult.total()).toBe(order.total());
+    expect(orderResult.items[0].id).toBe(orderItem.id);
+    expect(orderResult.items[0].name).toBe(orderItem.name);
+    expect(orderResult.items[0].price).toBe(orderItem.price);
+    expect(orderResult.items[0].productId).toBe(orderItem.productId);
+    expect(orderResult.items[0].quantity).toBe(orderItem.quantity);
+    expect(orderResult.items[0].subtotal()).toBe(orderItem.subtotal());
   });
 
   it("should update a order", async () => {
@@ -116,59 +107,39 @@ describe("Order repository test", () => {
     const orderRepository = new OrderRepository();
     await orderRepository.create(order);
 
-    const orderModel = await OrderModel.findOne({
-      where: { id: order.id },
-      include: [ "items" ],
-    });
+    let orderResult = await orderRepository.find(order.id);
 
-    expect(orderModel.toJSON()).toStrictEqual({
-      id: order.id,
-      customer_id: order.customerId,
-      total: order.total(),
-      items: [
-        {
-          id: orderItem1.id,
-          name: orderItem1.name,
-          price: orderItem1.price,
-          quantity: orderItem1.quantity,
-          order_id: order.id,
-          product_id: orderItem1.productId,
-        },
-      ],
-    });
-  // });
+    expect(orderResult.id).toBe(order.id);
+    expect(orderResult.customerId).toBe(order.customerId);
+    expect(orderResult.total()).toBe(order.total());
+    expect(orderResult.items[0].id).toBe(orderItem1.id);
+    expect(orderResult.items[0].name).toBe(orderItem1.name);
+    expect(orderResult.items[0].price).toBe(orderItem1.price);
+    expect(orderResult.items[0].productId).toBe(orderItem1.productId);
+    expect(orderResult.items[0].quantity).toBe(orderItem1.quantity);
+    expect(orderResult.items[0].subtotal()).toBe(orderItem1.subtotal());
 
     const order2 = new Order("123", "123", [orderItem1, orderItem2]);
     await orderRepository.update(order2);
 
-    const orderModel2 = await OrderModel.findOne({
-      where: { id: order2.id },
-      include: ["items"],
-    });
+    orderResult = await orderRepository.find(order2.id);
 
-    expect(orderModel2.toJSON()).toStrictEqual({
-      id: order2.id,
-      customer_id: order2.customerId,
-      total: order2.total(),
-      items: [
-        {
-          id: orderItem1.id,
-          name: orderItem1.name,
-          price: orderItem1.price,
-          quantity: orderItem1.quantity,
-          order_id: order.id,
-          product_id: orderItem1.productId,
-        },
-        {
-          id: orderItem2.id,
-          name: orderItem2.name,
-          price: orderItem2.price,
-          quantity: orderItem2.quantity,
-          order_id: order.id,
-          product_id: orderItem2.productId,
-        },
-      ],
-    });
+    expect(orderResult.id).toBe(order2.id);
+    expect(orderResult.customerId).toBe(order2.customerId);
+    expect(orderResult.total()).toBe(order2.total());
+    expect(orderResult.items[0].id).toBe(orderItem1.id);
+    expect(orderResult.items[0].name).toBe(orderItem1.name);
+    expect(orderResult.items[0].price).toBe(orderItem1.price);
+    expect(orderResult.items[0].productId).toBe(orderItem1.productId);
+    expect(orderResult.items[0].quantity).toBe(orderItem1.quantity);
+    expect(orderResult.items[0].subtotal()).toBe(orderItem1.subtotal());
+    expect(orderResult.items[1].id).toBe(orderItem2.id);
+    expect(orderResult.items[1].name).toBe(orderItem2.name);
+    expect(orderResult.items[1].price).toBe(orderItem2.price);
+    expect(orderResult.items[1].productId).toBe(orderItem2.productId);
+    expect(orderResult.items[1].quantity).toBe(orderItem2.quantity);
+    expect(orderResult.items[1].subtotal()).toBe(orderItem2.subtotal());
+
   });
 
   it("should find a order", async () => {
@@ -195,27 +166,18 @@ describe("Order repository test", () => {
     const orderRepository = new OrderRepository();
     await orderRepository.create(order);
 
-    const orderModel = await OrderModel.findOne({
-      where: { id: order.id },
-      include: [ "items" ],
-    });
+     const orderResult = await orderRepository.find(order.id);
 
-    expect(orderModel.toJSON()).toStrictEqual({
-      id: order.id,
-      customer_id: order.customerId,
-      total: order.total(),
-      items: [
-        {
-          id: orderItem.id,
-          name: orderItem.name,
-          price: orderItem.price,
-          quantity: orderItem.quantity,
-          order_id: order.id,
-          product_id: orderItem.productId,
-        },
-      ],
-    });
-  });
+    expect(orderResult.id).toBe(order.id);
+    expect(orderResult.customerId).toBe(order.customerId);
+    expect(orderResult.total()).toBe(order.total());
+    expect(orderResult.items[0].id).toBe(orderItem.id);
+    expect(orderResult.items[0].name).toBe(orderItem.name);
+    expect(orderResult.items[0].price).toBe(orderItem.price);
+    expect(orderResult.items[0].productId).toBe(orderItem.productId);
+    expect(orderResult.items[0].quantity).toBe(orderItem.quantity);
+    expect(orderResult.items[0].subtotal()).toBe(orderItem.subtotal());
+ });
 
   it("should throw an error when order is not found", async () => {
     const orderRepository = new OrderRepository();
