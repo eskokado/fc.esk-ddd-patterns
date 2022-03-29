@@ -25,7 +25,9 @@ export default class EventDispatcher implements EventDispatcherInterface {
     }
   }
 
-  unregisterAll(): void {}
+  unregisterAll(): void {
+    this.eventHandlers = {};
+  }
 
   notify(event: eventInterface): void {}
 }
