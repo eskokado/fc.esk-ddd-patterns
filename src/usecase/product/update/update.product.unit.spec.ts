@@ -47,7 +47,7 @@ describe("Unit Test update product use case", () => {
 
   it('Should thrown an error when name is missing',async () => {
     const input = {
-      id: "123",
+      id: product.id,
       name: "",
       price: 10
     }
@@ -64,7 +64,7 @@ describe("Unit Test update product use case", () => {
     const updateProductUseCase = new UpdateProductUseCase(productRepository);
 
     const input = {
-      id: "123",
+      id: product.id,
       name: "Product 1",
       price: -10
     }
