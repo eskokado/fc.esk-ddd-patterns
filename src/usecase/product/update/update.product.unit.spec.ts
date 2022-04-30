@@ -45,4 +45,19 @@ describe("Unit Test update product use case", () => {
     }).rejects.toThrow("Product not found");
   })
 
+  it('Should thrown an error when name is missing',async () => {
+    const input = {
+      id: "123",
+      name: "",
+      price: 10
+    }
+
+    const productRepository = MockRepository();
+    const updateProductUseCase = new UpdateProductUseCase(productRepository);
+
+    await expect(updateProductUseCase.execute(input))
+      .rejects.toThrow("Name is required");
+  });
+
+
 });
