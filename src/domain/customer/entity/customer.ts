@@ -32,6 +32,7 @@ export default class Customer implements CustomerInterface{
 
   changeAddress(address: Address) {
     this._address = address;
+    this.validateAddress();
   }  
 
   isActive(): boolean {
@@ -44,6 +45,12 @@ export default class Customer implements CustomerInterface{
     }
     if (this._name.length === 0) {
       throw new Error("Name is required");
+    }
+  }
+
+  validateAddress() {
+    if (this._address._street.length === 0) {
+      throw new Error("Street is required");
     }
   }
 
