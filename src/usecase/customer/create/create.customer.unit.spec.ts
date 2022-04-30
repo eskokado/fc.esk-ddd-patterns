@@ -38,4 +38,14 @@ describe("Unit Test create customer use case", () => {
       }
     });
   });
+
+  it('Should thrown an error when name is missing',async () => {
+    const customerRepository = MockRepository();
+    const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+
+    input.name = "";
+
+    await expect(createCustomerUseCase.execute(input))
+      .rejects.toThrow("Name is required");
+  });
 });
