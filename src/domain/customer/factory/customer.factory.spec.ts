@@ -21,6 +21,6 @@ describe("Customer factory unit test", () => {
 
   it("should throw when create customer with name invalid", () => {
     expect(() => CustomerFactory.create(""))
-      .toThrowError("Customer not created");
+      .toThrowError("Name is required");
   }); 
 });

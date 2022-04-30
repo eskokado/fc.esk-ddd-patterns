@@ -8,8 +8,8 @@ export default class CustomerFactory {
     try {
       let customer = new Customer(uuid(), name);
       return customer;
-    } catch (err) {
-      throw new Error("Customer not created")
+    } catch (err: any) {
+      throw new Error(err.message)
     }
   };
 
@@ -18,8 +18,8 @@ export default class CustomerFactory {
       let customer = new Customer(uuid(), name);
       customer.changeAddress(address);
       return customer;
-    } catch (err) {
-      throw new Error("Customer not created")
+    } catch (err: any) {
+      throw new Error(err.message)
     }
   };
 
