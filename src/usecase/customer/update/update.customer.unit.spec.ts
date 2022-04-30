@@ -38,4 +38,17 @@ describe("Unit Test update customer use case", () => {
 
     expect(output).toEqual(input);
   });
-});
+
+  it("should not find a customer", async () => {
+    const customerRepository = MockRepository();
+    customerRepository.find.mockImplementation(() => {
+      throw new Error("Customer not found");
+    })
+
+    const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository); 
+    
+    expect(() => {
+      return updateCustomerUseCase.execute(input);
+    }).rejects.toThrow("Customer not found");
+  })
+});  
