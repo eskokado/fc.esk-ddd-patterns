@@ -59,5 +59,17 @@ describe("Unit Test update product use case", () => {
       .rejects.toThrow("Name is required");
   });
 
+  it('Should thrown an error when price be less than zero',async () => {
+    const productRepository = MockRepository();
+    const updateProductUseCase = new UpdateProductUseCase(productRepository);
 
+    const input = {
+      id: "123",
+      name: "Product 1",
+      price: -10
+    }
+
+    await expect(updateProductUseCase.execute(input))
+      .rejects.toThrow("Price must be greater than zero");
+  });
 });
