@@ -41,8 +41,8 @@ describe("Unit Test for listing customer use case", () => {
 
   it("should list a customers", async () => {
     const customerRepository = new CustomerRepository();
-    customerRepository.create(customer1);
-    customerRepository.create(customer2);
+    await customerRepository.create(customer1);
+    await customerRepository.create(customer2);
     const listCustomerUseCase = new ListCustomerUseCase(customerRepository);
 
     const output = await listCustomerUseCase.execute({});

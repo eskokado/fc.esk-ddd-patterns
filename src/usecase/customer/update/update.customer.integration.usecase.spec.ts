@@ -45,7 +45,7 @@ describe("Unit Test update customer use case", () => {
 
   it("should update a customer", async () => {
     const customerRepository = new CustomerRepository();
-    customerRepository.create(customer);
+    await customerRepository.create(customer);
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository);
 
     const output = await updateCustomerUseCase.execute(input);
@@ -55,7 +55,7 @@ describe("Unit Test update customer use case", () => {
 
   it("should not find a customer", async () => {
     const customerRepository = new CustomerRepository();
-    customerRepository.create(customer);
+    await customerRepository.create(customer);
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository); 
     
     expect(() => {
@@ -65,7 +65,7 @@ describe("Unit Test update customer use case", () => {
 
   it('Should thrown an error when name is missing',async () => {
     const customerRepository = new CustomerRepository();
-    customerRepository.create(customer);
+    await customerRepository.create(customer);
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository);
 
     input.name = "";
@@ -76,7 +76,7 @@ describe("Unit Test update customer use case", () => {
 
   it('Should thrown an error when street is missing',async () => {
     const customerRepository = new CustomerRepository();
-    customerRepository.create(customer);
+    await customerRepository.create(customer);
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository);
 
     input.name = "John";
