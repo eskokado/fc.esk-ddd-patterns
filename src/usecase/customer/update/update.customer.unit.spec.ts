@@ -51,4 +51,15 @@ describe("Unit Test update customer use case", () => {
       return updateCustomerUseCase.execute(input);
     }).rejects.toThrow("Customer not found");
   })
+
+  it('Should thrown an error when name is missing',async () => {
+    const customerRepository = MockRepository();
+    const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository);
+
+    input.name = "";
+
+    await expect(updateCustomerUseCase.execute(input))
+      .rejects.toThrow("Name is required");
+  });
+
 });  
