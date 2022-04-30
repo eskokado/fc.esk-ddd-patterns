@@ -26,4 +26,23 @@ describe("Unit Test update product use case", () => {
 
     expect(output).toEqual(input);
   });
+
+  it("should not find a product", async () => {
+    const input = {
+      id: product.id,
+      name: "Product update",
+      price: 20
+    }
+    const productRepository = MockRepository();
+    productRepository.find.mockImplementation(() => {
+      throw new Error("Product not found");
+    })
+
+    const updateProductUseCase = new UpdateProductUseCase(productRepository); 
+    
+    expect(() => {
+      return updateProductUseCase.execute(input);
+    }).rejects.toThrow("Product not found");
+  })
+
 });
