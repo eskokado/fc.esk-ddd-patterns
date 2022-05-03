@@ -8,7 +8,7 @@ describe("E2E test for customer", () => {
 
   afterAll(async () => {
     await sequelize.close();
-  })
+  });
 
   it("should create a customer", async () => {
     const response = await request(app)
@@ -39,5 +39,52 @@ describe("E2E test for customer", () => {
       });
     
     expect(response.status).toBe(500);
+  });
+
+  it("should list all customer", async () => {
+    const response = await request(app)
+      .post("/customers")
+      .send({
+        name: "John",
+        Address: {
+          street: "Street",
+          city: "City",
+          number: 123,
+          zip: "12345"          
+        }
+      });
+    expect(response.status).toBe(201);
+
+    const response2 = await request(app)
+      .post("/customers")
+      .send({
+        name: "Joao",
+        Address: {
+          street: "Street 2",
+          city: "City 2",
+          number: 1234,
+          zip: "1234567"          
+        }
+      });
+    expect(response2.status).toBe(201);
+
+    const listResponse = await request(app)
+      .get("/customers").send();
+
+    expect(listResponse.status).toBe(200);
+    expect(listResponse.body.customers.length).toBe(2);
+    const customer1 = listResponse.body.customers[0];
+    expect(customer1.name).toBe("John");
+    expect(customer1.Address.street).toBe("Street");
+    expect(customer1.Address.city).toBe("City");
+    expect(customer1.Address.number).toBe(123);
+    expect(customer1.Address.zip).toBe("12345");
+
+    const customer2 = listResponse.body.customers[1];
+    expect(customer2.name).toBe("Joao");
+    expect(customer2.Address.street).toBe("Street 2");
+    expect(customer2.Address.city).toBe("City 2");
+    expect(customer2.Address.number).toBe(1234);
+    expect(customer2.Address.zip).toBe("1234567");
   });
 });
