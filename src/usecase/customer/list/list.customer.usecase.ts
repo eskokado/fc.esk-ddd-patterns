@@ -23,7 +23,7 @@ class OutputMapper {
           street: customer.Address.street,
           number: customer.Address.number,
           zip: customer.Address.zip,
-          city: customer.Address.zip
+          city: customer.Address.city
         }
       }))
     }
