@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { InputCreateCustomerDto } from "../../../usecase/customer/create/create.customer.dto";
 import CreateCustomerUseCase from "../../../usecase/customer/create/create.customer.usecase";
 import ListCustomerUseCase from "../../../usecase/customer/list/list.customer.usecase";
 import CustomerRepository from "../../customer/repository/customer.repository";
@@ -22,7 +23,6 @@ customerRoute.post("/", async (req: Request, res: Response) => {
 
     res.status(201).send(output);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 });

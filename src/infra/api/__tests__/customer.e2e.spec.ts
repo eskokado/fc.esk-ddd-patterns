@@ -1,5 +1,6 @@
 import { app, sequelize } from "../express";
 import request from "supertest";
+import { Customer } from "../../../usecase/customer/list/list.customer.dto";
 
 describe("E2E test for customer", () => {
   beforeEach(async () => {
@@ -73,18 +74,27 @@ describe("E2E test for customer", () => {
 
     expect(listResponse.status).toBe(200);
     expect(listResponse.body.customers.length).toBe(2);
+
     const customer1 = listResponse.body.customers[0];
     expect(customer1.name).toBe("John");
-    expect(customer1.Address.street).toBe("Street");
-    expect(customer1.Address.city).toBe("City");
-    expect(customer1.Address.number).toBe(123);
-    expect(customer1.Address.zip).toBe("12345");
+    expect(customer1.Address).toEqual(
+      expect.objectContaining({
+        street: 'Street',
+        city: 'City',
+        number: 123,
+        zip: '12345'
+      })
+    );
 
     const customer2 = listResponse.body.customers[1];
     expect(customer2.name).toBe("Joao");
-    expect(customer2.Address.street).toBe("Street 2");
-    expect(customer2.Address.city).toBe("City 2");
-    expect(customer2.Address.number).toBe(1234);
-    expect(customer2.Address.zip).toBe("1234567");
+    expect(customer2.Address).toEqual(
+      expect.objectContaining({
+        street: 'Street 2',
+        city: 'City 2',
+        number: 1234,
+        zip: '1234567'
+      })
+    );
   });
 });
