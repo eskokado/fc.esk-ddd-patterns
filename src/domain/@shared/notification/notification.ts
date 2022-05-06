@@ -10,10 +10,10 @@ export default class Notification {
     this.errors.push(error);
   }
 
-  messages(context: string): string {
+  messages(context?: string): string {
     let message = "";
     this.errors.forEach((error) => {
-      if (error.context === context) {
+      if (context === undefined || error.context === context) {
         message += `${error.context}: ${error.message},`
       }
     });
