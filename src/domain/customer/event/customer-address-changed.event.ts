@@ -1,4 +1,4 @@
-import EventInterface from "../../../@shared/event/event.interface";
+import EventInterface from "../../@shared/event/event.interface";
 import Address from "../value-object/address";
 
 
