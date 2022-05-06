@@ -13,7 +13,9 @@ export default class Notification {
   messages(context: string): string {
     let message = "";
     this.errors.forEach((error) => {
-      message += `${error.context}: ${error.message},`
+      if (error.context === context) {
+        message += `${error.context}: ${error.message},`
+      }
     });
     return message;
   }
