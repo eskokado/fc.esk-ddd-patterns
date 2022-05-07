@@ -9,19 +9,27 @@ export default class UpdateCustomerUseCase {
   }
 
   async execute(input: InputUpdateCustomerDto): Promise<OutputUpdateCustomerDto> {
-    const customer = await this.customerRepository.find(input.id);
+    var customer;
+    try {
+      customer = await this.customerRepository.find(input.id);
 
-    customer.changeName(input.name);
+      customer.changeName(input.name);
 
-    customer.changeAddress(new 
-            Address(
-              input.Address.street, 
-              input.Address.number, 
-              input.Address.zip, 
-              input.Address.city
-            )
-          );
-    await this.customerRepository.update(customer);
+      customer.changeAddress(new 
+              Address(
+                input.Address.street, 
+                input.Address.number, 
+                input.Address.zip, 
+                input.Address.city
+              )
+            );
+
+      customer.checkErrors();
+
+      await this.customerRepository.update(customer);
+    } catch (err: any) {
+      throw new Error(err.message);
+    }   
 
     return {
       id: customer.id,
