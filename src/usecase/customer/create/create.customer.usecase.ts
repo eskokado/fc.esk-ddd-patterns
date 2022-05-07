@@ -3,6 +3,7 @@ import { InputCreateCustomerDto, OutputCreateCustomerDto } from "./create.custom
 import { v4 as uuid } from "uuid";
 import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import Address from "../../../domain/customer/value-object/address";
+import NotificationError from "../../../domain/@shared/notification/notification.error";
 
 
 export default class CreateCustomerUseCase {
@@ -12,25 +13,30 @@ export default class CreateCustomerUseCase {
   }
 
   async execute(input: InputCreateCustomerDto): Promise<OutputCreateCustomerDto> {
-    const address = new Address(
-      input.Address.street, 
-      input.Address.number, 
-      input.Address.zip, 
-      input.Address.city);
+    try {
+      var address = new Address(
+        input.Address.street, 
+        input.Address.number, 
+        input.Address.zip, 
+        input.Address.city);
 
-    const customer = CustomerFactory.createWithAddress(input.name, address);
+      const customer = CustomerFactory.createWithAddress(input.name, address);
+      customer.checkErrors();
 
-    await this.customerRepository.create(customer);
+      await this.customerRepository.create(customer);
 
-    return {
-      id: customer.id,
-      name: customer.name,
-      Address: {
-        street: customer.Address.street,
-        city: customer.Address.city,
-        number: customer.Address.number,
-        zip: customer.Address.zip
+      return {
+        id: customer.id,
+        name: customer.name,
+        Address: {
+          street: customer.Address.street,
+          city: customer.Address.city,
+          number: customer.Address.number,
+          zip: customer.Address.zip
+        }
       }
+    } catch (err: any) {
+      throw new Error(err.message);
     }
-  }
+   }
 }
