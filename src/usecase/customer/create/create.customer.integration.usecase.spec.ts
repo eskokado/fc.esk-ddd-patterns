@@ -14,6 +14,8 @@ const input = {
   }
 }
 
+
+describe("Unit Test create customer use case", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
@@ -33,7 +35,6 @@ const input = {
   });
 
 
-describe("Unit Test create customer use case", () => {
   it("should create a customer", async () => {
     const customerRepository = new CustomerRepository();
     const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
