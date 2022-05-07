@@ -9,14 +9,20 @@ export default class CreateProductUseCase {
   }
 
   async execute(input: InputCreateProductDto): Promise<OutputCreateProductDto> {
-    const product = ProductFactory.create("a", input.name, input.price);
+    try {
+      const product = ProductFactory.create("a", input.name, input.price);
 
-    await this.productRepository.create(product);
+      product.checkErrors();
 
-    return {
-      id: product.id,
-      name: product.name,
-      price: product.price
+      await this.productRepository.create(product);
+
+      return {
+        id: product.id,
+        name: product.name,
+        price: product.price
+      }
+    } catch (err: any) {
+      throw new Error(err.message);
     }
   }
 }
