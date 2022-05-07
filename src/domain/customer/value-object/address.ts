@@ -1,9 +1,13 @@
+import Notification from "../../@shared/notification/notification";
+
 export default class Address {
 
     _street: string = "";
     _number: number = 0;
     _zip: string = "";
     _city: string = "";
+    
+    protected _notificationAddress: Notification;
 
     constructor(street: string, number: number, zip: string, city: string) {
 
@@ -12,7 +16,13 @@ export default class Address {
         this._zip = zip;
         this._city = city;
 
+        this._notificationAddress = new Notification();
+
         this.validate();
+    }
+
+    get notificationAddress(): Notification {
+        return this._notificationAddress;
     }
 
     get street(): string {
@@ -33,16 +43,28 @@ export default class Address {
 
     validate() {
         if (this._street.length === 0) {
-            throw new Error("Street is required");
+            this._notificationAddress.addError({
+                message: "Street is required",
+                context: "address"
+            });
         }
         if (this._number === 0) {
-            throw new Error("Number is required");
+            this._notificationAddress.addError({
+                message: "Number is required",
+                context: "address"
+            });
         }
         if (this._zip.length === 0) {
-            throw new Error("Zip is required");
+            this._notificationAddress.addError({
+                message: "Zip is required",
+                context: "address"
+            });
         }
         if (this._city.length === 0) {
-            throw new Error("City is required");
+            this._notificationAddress.addError({
+                message: "City is required",
+                context: "address"
+            });
         }
     }
 

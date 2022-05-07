@@ -63,10 +63,9 @@ export default class Customer extends Entity implements CustomerInterface{
   }
 
   validateAddress() {
-    if (this._address._street.length === 0) {
-      this.notification.addError({
-        message: "Street is required",
-        context: "customer"
+    if (this._address.notificationAddress.hasErrors()) {
+      this._address.notificationAddress.getErrors().map((error) => {
+        this.notification.addError(error);
       });
     }
   }
