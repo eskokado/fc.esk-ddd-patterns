@@ -36,12 +36,12 @@ describe("Unit Test update customer use case", () => {
 
     await sequelize.addModels([CustomerModel]);
     await sequelize.sync();    
+
   });
 
   afterEach(async () => {
     await sequelize.close();
   });
-
 
   it("should update a customer", async () => {
     const customerRepository = new CustomerRepository();
@@ -55,13 +55,11 @@ describe("Unit Test update customer use case", () => {
 
   it("should not find a customer", async () => {
     const customerRepository = new CustomerRepository();
-    await customerRepository.create(customer);
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository); 
     
-    expect(() => {
-      return updateCustomerUseCase.execute(input);
-    }).rejects.toThrow("Customer not found");
-  })
+    await expect(updateCustomerUseCase.execute(input))
+      .rejects.toThrow("Customer not found");
+  });
 
   it('Should thrown an error when name is missing',async () => {
     const customerRepository = new CustomerRepository();
@@ -71,7 +69,7 @@ describe("Unit Test update customer use case", () => {
     input.name = "";
 
     await expect(updateCustomerUseCase.execute(input))
-      .rejects.toThrow("Name is required");
+      .rejects.toThrow("customer: Name is required");
   });
 
   it('Should thrown an error when street is missing',async () => {
@@ -83,6 +81,6 @@ describe("Unit Test update customer use case", () => {
     input.Address.street = "";
 
     await expect(updateCustomerUseCase.execute(input))
-      .rejects.toThrow("Street is required");
+      .rejects.toThrow("address: Street is required");
   });
 });  

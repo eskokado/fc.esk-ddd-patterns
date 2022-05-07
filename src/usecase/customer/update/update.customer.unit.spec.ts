@@ -1,4 +1,3 @@
-import Customer from "../../../domain/customer/entity/customer";
 import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import Address from "../../../domain/customer/value-object/address";
 import UpdateCustomerUseCase from "./update.customer.usecase";
@@ -47,8 +46,8 @@ describe("Unit Test update customer use case", () => {
 
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository); 
     
-    expect(() => {
-      return updateCustomerUseCase.execute(input);
+    expect(async () => {
+      return await updateCustomerUseCase.execute(input);
     }).rejects.toThrow("Customer not found");
   })
 
@@ -59,10 +58,10 @@ describe("Unit Test update customer use case", () => {
     input.name = "";
 
     await expect(updateCustomerUseCase.execute(input))
-      .rejects.toThrow("Name is required");
+      .rejects.toThrow("customer: Name is required");
   });
 
-  it('Should thrown an error when street is missing',async () => {
+  it('Should thrown an error when street is missing', async () => {
     const customerRepository = MockRepository();
     const updateCustomerUseCase = new UpdateCustomerUseCase(customerRepository);
 
@@ -70,6 +69,6 @@ describe("Unit Test update customer use case", () => {
     input.Address.street = "";
 
     await expect(updateCustomerUseCase.execute(input))
-      .rejects.toThrow("Street is required");
+      .rejects.toThrow("address: Street is required");
   });
 });  
