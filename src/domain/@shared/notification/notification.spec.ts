@@ -1,4 +1,4 @@
-import Notification from "./notification";
+import Notification, { NotificationErrorProps } from "./notification";
 
 describe("Unit tests for notifications", () => {
 
@@ -47,4 +47,15 @@ describe("Unit tests for notifications", () => {
     expect(notification.hasErrors()).toBe(true);
   });
 
+  it("should get all errors props", () => {
+    const notification = new Notification();
+    const error = {
+      message: "error message",
+      context: "customer"
+    };
+
+    notification.addError(error);
+
+    expect(notification.getErrors().toString()).toBe([error].toString());
+  });
 });
