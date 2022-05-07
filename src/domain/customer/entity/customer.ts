@@ -14,10 +14,6 @@ export default class Customer extends Entity implements CustomerInterface{
     this._id = id;
     this._name = name;
     this.validate();
-
-    if (this.notification.hasErrors()) {
-      throw new NotificationError(this.notification.getErrors());
-    }
   }
 
   get id(): string {
@@ -45,6 +41,12 @@ export default class Customer extends Entity implements CustomerInterface{
       return this._active;
   }
 
+  checkErrors() {
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors());
+    }
+  }
+
   validate() {
     if (this._id.length === 0) {
       this.notification.addError({
@@ -62,22 +64,24 @@ export default class Customer extends Entity implements CustomerInterface{
 
   validateAddress() {
     if (this._address._street.length === 0) {
-      throw new Error("Street is required");
+      this.notification.addError({
+        message: "Street is required",
+        context: "customer"
+      });
     }
   }
 
   changeName(name: string) {
     this._name = name;
     this.validate();
-
-    if (this.notification.hasErrors()) {
-      throw new NotificationError(this.notification.getErrors());
-    }
   }
 
   activate() {         
     if (this._address === undefined) {
-      throw new Error("Address is mandatory to activate a customer");
+      this.notification.addError({
+        message: "Address is mandatory to activate a customer",
+        context: "customer"
+      });
     }
     
     this._active = true;
