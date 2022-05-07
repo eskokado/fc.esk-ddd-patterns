@@ -9,17 +9,23 @@ export default class UpdateProductUseCase {
   }
 
   async execute(input: InputUpdateProductDto): Promise<OutputUpdateProductDto> {
-    const product = await this.productRepository.find(input.id);
+    try {
+      const product = await this.productRepository.find(input.id);
 
-    product.changeName(input.name);
-    product.changePrice(input.price);
+      product.changeName(input.name);
+      product.changePrice(input.price);
 
-    await this.productRepository.update(product);
+      product.checkErrors();
 
-    return {
-      id: product.id,
-      name: product.name,
-      price: product.price
-    };
+      await this.productRepository.update(product);
+
+      return {
+        id: product.id,
+        name: product.name,
+        price: product.price
+      };
+    } catch (err: any) {
+      throw new Error(err.message);
+    }
   }
 }
