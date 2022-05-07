@@ -7,6 +7,7 @@ export default class CustomerFactory {
   public static create(name: string): CustomerInterface {
     try {
       let customer = new Customer(uuid(), name);
+      customer.checkErrors();
       return customer;
     } catch (err: any) {
       throw new Error(err.message)
@@ -17,6 +18,7 @@ export default class CustomerFactory {
     try {
       let customer = new Customer(uuid(), name);
       customer.changeAddress(address);
+      customer.checkErrors();
       return customer;
     } catch (err: any) {
       throw new Error(err.message)
