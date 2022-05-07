@@ -9,6 +9,7 @@ export default interface CustomerInterface {
   isActive(): boolean;
   validate(): void;
   changeName(name: string): void;
+  checkErrors(): void;
   activate(): void;
   deactivate(): void;
   set Address(address: Address);
