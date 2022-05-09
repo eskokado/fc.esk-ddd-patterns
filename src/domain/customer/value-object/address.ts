@@ -1,4 +1,5 @@
 import Notification from "../../@shared/notification/notification";
+import AddressValidatorFactory from "../factory/address.validator.factory";
 
 export default class Address {
 
@@ -42,30 +43,7 @@ export default class Address {
     }
 
     validate() {
-        if (this._street.length === 0) {
-            this._notificationAddress.addError({
-                message: "Street is required",
-                context: "address"
-            });
-        }
-        if (this._number === 0) {
-            this._notificationAddress.addError({
-                message: "Number is required",
-                context: "address"
-            });
-        }
-        if (this._zip.length === 0) {
-            this._notificationAddress.addError({
-                message: "Zip is required",
-                context: "address"
-            });
-        }
-        if (this._city.length === 0) {
-            this._notificationAddress.addError({
-                message: "City is required",
-                context: "address"
-            });
-        }
+        AddressValidatorFactory.create().validate(this);
     }
 
     toString() {
