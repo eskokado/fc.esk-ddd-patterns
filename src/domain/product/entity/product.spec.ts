@@ -23,6 +23,20 @@ describe("Product unit tests", () => {
         }).toThrowError("product: Price must be greater than zero");
     });  
 
+    it("should throw error when name is empty and price is less than zero", () => {
+        expect(() => {
+            const product = new Product("123", "", -1);
+            product.checkErrors();
+        }).toThrowError("product: Name is required, product: Price must be greater than zero");
+    });  
+
+    it("should throw error when invalid datas", () => {
+        expect(() => {
+            const product = new Product("", "", -1);
+            product.checkErrors();
+        }).toThrowError("product: Id is required, product: Name is required, product: Price must be greater than zero");
+    });  
+
     it("should change name", () => {
         const product = new Product("123", "Product 1", 100);
         product.changeName("Product 2");
@@ -36,4 +50,31 @@ describe("Product unit tests", () => {
         product.checkErrors();
         expect(product.price).toBe(150);
     });  
+
+    it("should throw error when change name is empty", () => {
+        expect(() => {
+            const product = new Product("123", "Product 1", 100);
+            product.changeName("");
+            product.checkErrors();
+        }).toThrowError("product: Name is required");
+    });  
+
+
+    it("should throw error when change price is less than zero", () => {
+        expect(() => {
+            const product = new Product("123", "Product 1", 100);
+            product.changePrice(-1);
+            product.checkErrors();
+        }).toThrowError("product: Price must be greater than zero");
+    });  
+
+    it("should throw error when change name is empty and price is less than zero", () => {
+        expect(() => {
+            const product = new Product("123", "Product 1", 100);
+            product.changeName("");
+            product.changePrice(-1);
+            product.checkErrors();
+        }).toThrowError("product: Name is required, product: Price must be greater than zero");
+    });  
+
 });
