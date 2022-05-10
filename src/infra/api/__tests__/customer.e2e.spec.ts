@@ -96,5 +96,27 @@ describe("E2E test for customer", () => {
         zip: '1234567'
       })
     );
+
+    const listResponseXML = await request(app)
+    .get("/customers")
+    .set("Accept", "application/xml")
+    .send();
+
+    expect(listResponseXML.status).toBe(200);
+    expect(listResponseXML.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
+    expect(listResponseXML.text).toContain("<customers>");
+    expect(listResponseXML.text).toContain("<customer>");
+    expect(listResponseXML.text).toContain("<name>John</name>");
+    expect(listResponseXML.text).toContain("<street>Street</street>");
+    expect(listResponseXML.text).toContain("<city>City</city>");
+    expect(listResponseXML.text).toContain("<number>123</number>");
+    expect(listResponseXML.text).toContain("<zip>12345</zip>");
+    expect(listResponseXML.text).toContain("</customer>");
+    expect(listResponseXML.text).toContain("<name>John</name>");
+    expect(listResponseXML.text).toContain("<street>Street 2</street>");
+    expect(listResponseXML.text).toContain("<city>City 2</city>");
+    expect(listResponseXML.text).toContain("<number>1234</number>");
+    expect(listResponseXML.text).toContain("<zip>1234567</zip>");
   });
+
 });
